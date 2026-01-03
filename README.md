@@ -1,17 +1,17 @@
-# ConvLSTM Video Prediction: Next-Frame Forecasting on Moving MNIST
+# ConvLSTM Video Tahmini: Hareketli MNIST Üzerinde Gelecek Kare Öngörüsü
 
-## Abstract
-This project implements a **ConvLSTM (Convolutional Long Short-Term Memory)** neural network for the task of Spatiotemporal Video Prediction. The objective is to predict the subsequent frames in a video sequence given a history of consecutive frames. The model is trained on the **Moving MNIST** dataset, learning to model both the spatial appearance (digits) and the temporal dynamics (movement trajectories) simultaneously.
+## Özet
+Bu proje, video dizilerindeki spatiotemporal (uzay-zamansal) özellikleri öğrenerek bir sonraki kareyi tahmin etmek amacıyla geliştirilmiş bir **ConvLSTM (Convolutional Long Short-Term Memory)** derin öğrenme modelini sunar. Çalışma, **Moving MNIST** veri seti üzerinde gerçekleştirilmiştir ve modelin hem görsel nesneleri (rakamlar) hem de bu nesnelerin zamansal hareket dinamiklerini eşzamanlı olarak modellemesi hedeflenmiştir.
 
-## Methodology
+## Metodoloji
 
-### Problem Definition
-Given a sequence of frames $X_{t-n}, ..., X_{t}$, the goal is to predict the next frame $\hat{Y}_{t+1}$. This is treated as a self-supervised learning problem where the ground truth is the actual future frame in the sequence.
+### Problem Tanımı
+Verilen bir $X_{t-n}, ..., X_{t}$ video kareleri dizisi kullanılarak, bir sonraki $\hat{Y}_{t+1}$ karesinin tahmin edilmesi, gözetimsiz (self-supervised) bir öğrenme problemi olarak ele alınmıştır. Model, geçmiş karelerdeki hareket örüntülerini analiz ederek gelecekteki piksel yoğunluklarını öngörür.
 
-### Algorithm: ConvLSTM
-Standard LSTM networks process 1D vectors, which necessitates flattening image data, leading to a loss of spatial structural information. **ConvLSTM** overcomes this by replacing the internal matrix multiplications with convolution operations. This allows the flow of data through the LSTM cells to maintain 5D tensors: `(Batch, Time, Height, Width, Channels)`.
+### Algoritma: ConvLSTM
+Geleneksel LSTM ağları 1D vektörler üzerinde çalıştığından, görüntü verilerini işlerken uzaysal bilgiyi (piksel komşulukları) kaybederler. **ConvLSTM** mimarisi, LSTM hücreleri içindeki matris çarpımlarını **konvolüsyon (convolution)** işlemleriyle değiştirerek bu sorunu çözer. Bu sayede veri, ağ boyunca 5D tensörler `(Batch, Time, Height, Width, Channels)` halinde akar ve uzaysal yapı korunur.
 
-The core equation for the ConvLSTM cell is:
+ConvLSTM hücresinin temel matematiksel ifadesi şöyledir:
 
 $$
 \begin{aligned}
@@ -23,70 +23,78 @@ o_t &= \sigma(W_{xo} * \mathcal{X}_t + W_{ho} * \mathcal{H}_{t-1} + W_{co} \circ
 \end{aligned}
 $$
 
-Where $*$ denotes the convolution operator and $\circ$ denotes the Hadamard product.
+Burada $*$ konvolüsyon operatörünü, $\circ$ ise Hadamard (eleman bazlı) çarpımı temsil eder.
 
-## Model Architecture
-The implemented architecture follows a deep Encoder-Decoder structure designed to capture multi-scale spatiotemporal features.
+## Model Mimarisi
+Geliştirilen model, çok ölçekli hareket ve şekil özelliklerini yakalamak için derin bir Kodlayıcı-Kodçözücü (Encoder-Decoder) yapısına sahiptir.
 
-1.  **Input Layer:** `(Batch, 19, 64, 64, 1)` - Sequence of 19 grayscale frames.
-2.  **ConvLSTM Layer 1:** 64 Filters, 5x5 Kernel. Captures broad motion patterns.
+1.  **Giriş Katmanı:** `(Batch, 19, 64, 64, 1)` - 19 karelik gri tonlamalı video dizisi.
+2.  **ConvLSTM Katmanı 1:** 64 Filtre, 5x5 Kernel. Geniş alandaki hareket örüntülerini ve genel nesne konumlarını yakalar.
     *   *Batch Normalization + ReLU*
-3.  **ConvLSTM Layer 2:** 64 Filters, 3x3 Kernel. Refines local spatial details and object interactions.
+3.  **ConvLSTM Katmanı 2:** 64 Filtre, 3x3 Kernel. Daha ince uzaysal detayları ve nesne etkileşimlerini öğrenir.
     *   *Batch Normalization + ReLU*
-4.  **ConvLSTM Layer 3:** 64 Filters, 1x1 Kernel. Acts as a feature bottleneck and mixer.
+4.  **ConvLSTM Katmanı 3:** 64 Filtre, 1x1 Kernel. Özellik haritalarını birleştirir (bottleneck) ve derinlik kazandırır.
     *   *Batch Normalization + ReLU*
-5.  **Output Layer (Conv3D):** 3x3x3 Kernel with Sigmoid Activation. Projects the features back to the pixel space `[0, 1]`.
+5.  **Çıkış Katmanı (Conv3D):** 3x3x3 Kernel, Sigmoid Aktivasyon. Öğrenilen özellikleri tekrar piksel uzayına `[0, 1]` dönüştürür ve zamansal düzeltme (smoothing) uygular.
 
-## Loss Functions
-To ensure high fidelity and avoid blurriness common in MSE-based video prediction, a composite loss function is employed:
+## Kayıp Fonksiyonları (Loss Functions)
+MSE (Ortalama Kare Hata) tabanlı modellerde sıkça görülen bulanıklık (blurriness) problemini aşmak için hibrit bir kayıp fonksiyonu kullanılmıştır:
 
-*   **Binary Cross Entropy (BCE):** Ensures pixel-level accuracy.
-*   **Perceptual Loss (VGG16):** Minimizes the difference in high-level feature representations, resulting in more natural-looking digits.
-*   **Gradient Difference Loss (GDL):** Penalizes differences in image gradients to sharpen edges and maintain structural integrity.
+*   **Binary Cross Entropy (BCE):** Piksel bazında doğruluğu maksimize eder.
+*   **Perceptual Loss (Algısal Kayıp - VGG16):** Görüntülerin insan algısına uygunluğunu artırmak için, VGG16 ağı üzerinden çıkarılan yüksek seviyeli özelliklerin benzerliğini ölçer.
+*   **Gradient Difference Loss (GDL):** Görüntü gradyanları arasındaki farkı minimizeerek kenar keskinliğini ve detayları korur.
 
-## Results
+## Sonuçlar ve Değerlendirme
 
-The model performance is evaluated using Peak Signal-to-Noise Ratio (PSNR), Structural Similarity Index (SSIM), and Mean Squared Error (MSE).
+Modelin başarımı, görüntü işleme literatüründe standart olan şu metriklerle ölçülmüştür:
 
-| Metric | Average Value | Description |
+| Metrik | Ortalama Değer | Açıklama |
 | :--- | :--- | :--- |
-| **PSNR** | **~25.0 dB** | Measures reconstruction quality. Higher is better. |
-| **SSIM** | **0.85** | Measures structural similarity (0 to 1). Closer to 1 is better. |
-| **MSE** | **Low** | Measures the average squared difference between estimated and actual values. |
+| **PSNR** | **~25.0 dB** | (Peak Signal-to-Noise Ratio) Görüntü kalitesini logaritmik ölçekte ölçer. Yüksek olması iyidir. |
+| **SSIM** | **0.85** | (Structural Similarity Index) Yapısal benzerliği 0-1 arasında ölçer. 1'e yakın olması hedeflenir. |
+| **MSE** | **Düşük** | Tahmin edilen ve gerçek pikseller arasındaki karesel hatadır. |
 
-### Visual Analysis
+### Görsel Analiz
 
-The figure below compares the Ground Truth (Top Row) with the Model Predictions (Bottom Row). The model successfully predicts the trajectory and preserves the shape of the digits.
+Aşağıdaki animasyonda, modelin test verisi üzerindeki performansı görülmektedir.
+*   **Üst Satır:** Gerçek Görüntü (Ground Truth)
+*   **Alt Satır:** Modelin Tahmini (Prediction)
 
-![Prediction Comparison](./results/evaluation_results.png)
+Modelin, rakamların yörüngesini başarıyla takip ettiği ve şekil bozulmalarını minimum düzeyde tuttuğu gözlemlenmektedir.
 
-### Training Convergence
+![Model Tahmin Animasyonu](sunum_karsilastirma.gif)
 
-The training loss curve demonstrates stable convergence, indicating effective optimization of the composite loss function.
+### Eğitim Eğrisi (Loss Curve)
 
-![Training Loss](./results/loss_curve.png)
+Eğitim boyunca toplam kaybın (Total Loss) değişimi aşağıdadır. Eğrinin kararlı bir şekilde düşmesi, optimizasyonun başarılı olduğunu gösterir.
 
-## Installation and Usage
+![Loss Curve](results/loss_curve.png)
 
-**Prerequisites:** Python 3.8+, TensorFlow 2.10+
+## Kurulum ve Kullanım
 
-1.  **Clone the Repository**
+**Gereksinimler:** Python 3.8+, TensorFlow 2.10+
+
+1.  **Repoyu Klonlayın**
     ```bash
     git clone https://github.com/samettkartal/ConvLSTM-Video-Prediction.git
     cd ConvLSTM-Video-Prediction
     ```
 
-2.  **Install Dependencies**
+2.  **Kütüphaneleri Yükleyin**
     ```bash
     pip install -r requirements.txt
     ```
 
-3.  **Train the Model**
+3.  **Modeli Eğitin**
     ```bash
     python train.py
     ```
 
-4.  **Evaluate**
+4.  **Test Edin**
     ```bash
     python evaluate.py
     ```
+
+## İletişim
+Samet Kartal
+E-posta: 220212006@ostimteknik.edu.tr
