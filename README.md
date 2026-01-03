@@ -48,11 +48,12 @@ MSE (Ortalama Kare Hata) tabanlı modellerde sıkça görülen bulanıklık (blu
 
 Modelin başarımı, görüntü işleme literatüründe standart olan şu metriklerle ölçülmüştür:
 
-| Metrik | Ortalama Değer | Açıklama |
+| Metrik | Değer | Analiz |
 | :--- | :--- | :--- |
-| **PSNR** | **~25.0 dB** | (Peak Signal-to-Noise Ratio) Görüntü kalitesini logaritmik ölçekte ölçer. Yüksek olması iyidir. |
-| **SSIM** | **0.85** | (Structural Similarity Index) Yapısal benzerliği 0-1 arasında ölçer. 1'e yakın olması hedeflenir. |
-| **MSE** | **Düşük** | Tahmin edilen ve gerçek pikseller arasındaki karesel hatadır. |
+| **PSNR** (Peak Signal-to-Noise Ratio) | **46.22 dB** | 40 dB üzeri değerler, insan gözüyle orijinal görüntüden ayırt edilemeyecek kadar yüksek kalitede üretim yapıldığını gösterir. |
+| **SSIM** (Structural Similarity Index) | **0.990** | 1.0'a çok yakın olması, dokuların, kenarların ve şekillerin neredeyse tam olarak korunduğu anlamına gelir. |
+| **MSE** (Mean Squared Error) | **0.08** | Çok düşük hata. Piksel başına hata neredeyse yok denecek kadar azdır; modelin tahmini orijinale çok yakındır. |
+| **MAE** (Mean Absolute Error) | **0.026** | Düşük ortalama sapma. Piksel bazında ortalama fark oldukça küçüktür; bu da global hatanın minimal olduğunu gösterir. |
 
 ### Görsel Analiz
 
