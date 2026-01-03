@@ -1,10 +1,11 @@
 import tensorflow as tf
 import os
 import matplotlib.pyplot as plt
-from config import EPOCHS, CHECKPOINT_DIR, LOG_DIR, RESULTS_DIR, PERCEPTUAL_WEIGHT, GDL_WEIGHT
-from data_loader import get_dataset
-from model import build_model
-from utils import visualize_predictions, save_loss_plot, calculate_psnr, calculate_ssim
+from src.config import EPOCHS, CHECKPOINT_DIR, LOG_DIR, RESULTS_DIR, PERCEPTUAL_WEIGHT, GDL_WEIGHT
+from src.data_loader import create_shifted_frames
+from src.model import build_model
+from src.utils import save_images, make_gif, plot_loss_curve, calculate_psnr, calculate_ssim
+from src.losses import TotalLoss
 
 
 # Enable Mixed Precision

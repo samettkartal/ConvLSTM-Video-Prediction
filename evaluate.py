@@ -1,7 +1,8 @@
 import os
-from config import BATCH_SIZE, RESULTS_DIR
-from data_loader import get_dataset
-from utils import load_trained_model, calculate_average_metrics, visualize_predictions
+from src.config import *
+from src.data_loader import create_shifted_frames
+from src.model import build_model
+from src.utils import save_images
 
 def main():
     print("=== Starting Evaluation ===")
