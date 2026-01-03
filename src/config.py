@@ -33,7 +33,8 @@ GRADIENT_CLIP_NORM = 1.0   # Clip gradients to prevent explosion
 # Paths
 # Paths
 try:
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # Go up one level from 'src' to get to the project root
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 except NameError:
     BASE_DIR = os.getcwd()
 
