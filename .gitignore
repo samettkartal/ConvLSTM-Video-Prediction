@@ -10,9 +10,12 @@ env/
 data/
 logs/
 checkpoints/
-results/
+
+# Exclude results folder contents but keep the folder and specific image types
+results/*
 !results/*.png
 !results/*.jpg
+!results/
 
 # Large files and Archives
 *.zip
