@@ -1,0 +1,28 @@
+# Python stuff
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Data and Artifacts
+data/
+logs/
+checkpoints/
+results/
+!results/*.png
+!results/*.jpg
+
+# Large files and Archives
+*.zip
+*.tar.gz
+*.rar
+
+# IDE settings
+.vscode/
+.idea/
+
+# System
+Thumbs.db
+Desktop.ini
