@@ -96,6 +96,21 @@ Eğitim boyunca toplam kaybın (Total Loss) değişimi aşağıdadır. Eğrinin 
     python evaluate.py
     ```
 
+## Colleague kurulum notları
+
+- `README.md` — Colleague kurulum notu: Klonlama, bağımlılık kurulumu, eğitim ve test adımları bu dosyada özetlenir.
+- `requirements.txt` — Colleague kurulum notu: Kurulumun ilk adımı `pip install -r requirements.txt` komutudur.
+- `train.py` — Colleague kurulum notu: Bağımlılıklar yüklendikten sonra eğitim için `python train.py` çalıştırın.
+- `evaluate.py` — Colleague kurulum notu: Eğitim veya `checkpoints/` ağırlıkları hazırsa değerlendirme için `python evaluate.py` çalıştırın.
+- `src/__init__.py` — Colleague kurulum notu: `src` paketinin kökü; ayrı bir kurulum adımı gerektirmez.
+- `src/config.py` — Colleague kurulum notu: `data/`, `checkpoints/`, `logs/` ve `results/` dizinlerini otomatik oluşturur; hiperparametreler burada ayarlanır.
+- `src/data_loader.py` — Colleague kurulum notu: İlk çalıştırmada `moving_mnist` veri seti `tensorflow_datasets` üzerinden indirilir.
+- `src/layers.py` — Colleague kurulum notu: ConvLSTM katmanları; yalnızca `train.py` / `evaluate.py` akışıyla kullanılır.
+- `src/model.py` — Colleague kurulum notu: Model mimarisini kurar; doğrudan çalıştırılmaz, eğitim/değerlendirme betikleri import eder.
+- `src/losses.py` — Colleague kurulum notu: Hibrit kayıp fonksiyonu; `train.py` eğitim döngüsünde kullanılır.
+- `src/utils.py` — Colleague kurulum notu: Ağırlık kaydı, metrik ve görselleştirme yardımcıları; `checkpoints/` ve `results/` ile birlikte kullanılır.
+- `src/visualize_prediction.py` — Colleague kurulum notu: Eğitilmiş modelle sunum GIF’i üretmek için `python -m src.visualize_prediction` (proje kökünden) çalıştırın.
+
 ## İletişim
 Samet Kartal
 E-posta: 220212006@ostimteknik.edu.tr
