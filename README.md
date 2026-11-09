@@ -75,6 +75,8 @@ Eğitim boyunca toplam kaybın (Total Loss) değişimi aşağıdadır. Eğrinin 
 
 **Gereksinimler:** Python 3.8+, TensorFlow 2.10+
 
+* Python 3.10+ önerilir.
+
 1.  **Repoyu Klonlayın**
     ```bash
     git clone https://github.com/samettkartal/ConvLSTM-Video-Prediction.git
