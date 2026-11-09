@@ -1,3 +1,4 @@
+"""ConvLSTM video tahmin yapilandirmasi."""
 import os
 
 # Hyperparameters
