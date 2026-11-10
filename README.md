@@ -1,3 +1,4 @@
+<!-- readme dosyası -->
 # ConvLSTM Video Tahmini: Hareketli MNIST Üzerinde Gelecek Kare Öngörüsü
 
 ## Özet
