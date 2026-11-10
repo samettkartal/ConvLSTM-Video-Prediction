@@ -96,6 +96,12 @@ Eğitim boyunca toplam kaybın (Total Loss) değişimi aşağıdadır. Eğrinin 
     python evaluate.py
     ```
 
+## Şirket içi notlar (COPoints)
+
+**P1 destek (SLA):** Kritik API çökmesi veya puan işlenememesi — ilk yanıt hedefi 15 dakika, çözüm hedefi 2 saat. P1 ticket’lar `#support-war-room` kanalına düşer; nöbetçi mühendis `#incidents` üzerinden 10 dakika içinde yanıt verir.
+
+**Masraf onayı:** 5.000 TL ve altı → Departman Yöneticisi; 5.000–50.000 TL → Finans Direktörü; 50.000 TL üzeri → CEO ve Yönetim Kurulu bilgilendirmesi. Fişler her ayın 25’ine kadar sisteme girilmelidir; aksi halde ödeme bir sonraki ay bordrosuna aktarılır.
+
 ## İletişim
 Samet Kartal
 E-posta: 220212006@ostimteknik.edu.tr
