@@ -96,6 +96,11 @@ Eğitim boyunca toplam kaybın (Total Loss) değişimi aşağıdadır. Eğrinin 
     python evaluate.py
     ```
 
+## Notlar
+
+- **P1** olaylarında ilk yanıt süresi: **15 dakika**.
+- **5.000–50.000 TL** aralığındaki masraflar **Finans Direktörü** onayı gerektirir.
+
 ## İletişim
 Samet Kartal
 E-posta: 220212006@ostimteknik.edu.tr
