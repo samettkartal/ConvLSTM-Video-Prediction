@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <title>src/layers.py — Özet</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: #e1bee7;
+      color: #2d0a45;
+    }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: #e1bee7;
+      position: relative;
+      padding-bottom: 18mm;
+    }
+    header {
+      background: linear-gradient(135deg, #4a148c, #7b1fa2);
+      color: #fff;
+      padding: 22px 28px 18px;
+      position: relative;
+    }
+    header h1 {
+      margin: 0 0 6px;
+      font-size: 1.65rem;
+      max-width: 70%;
+    }
+    header p {
+      margin: 0;
+      color: #ce93d8;
+      font-size: 0.95rem;
+    }
+    .badge {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      background: #fff;
+      color: #4a148c;
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      padding: 8px 18px;
+      border-radius: 999px;
+      border: 2px solid #ce93d8;
+      box-shadow: 0 2px 8px rgba(74, 20, 140, 0.25);
+    }
+    main {
+      padding: 20px 28px;
+    }
+    .card {
+      background: #fff;
+      border: 2px solid #7b1fa2;
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      color: #4a148c;
+    }
+    .card ul {
+      margin: 8px 0 0;
+      padding-left: 1.2em;
+    }
+    .card li { margin: 4px 0; line-height: 1.45; }
+    .card p { margin: 0; line-height: 1.5; font-size: 0.92rem; }
+    footer {
+      background: #7b1fa2;
+      color: #fff;
+      text-align: center;
+      font-size: 0.75rem;
+      padding: 10px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    @media print {
+      body { background: #e1bee7; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <span class="badge">ÖNEMLİ</span>
+      <h1>src/layers.py — Özet</h1>
+      <p>TensorFlow Keras özel attention katmanları</p>
+    </header>
+    <main>
+      <section class="card">
+        <h2>Dosya amacı</h2>
+        <p>
+          TensorFlow/Keras için özel dikkat (attention) katmanları tanımlar.
+          Kanal ve uzamsal dikkat modülleri (CBAM benzeri), video/görüntü
+          modellerinde özellik haritalarını yeniden ölçeklemek için kullanılır.
+        </p>
+      </section>
+      <section class="card">
+        <h2>ChannelAttention</h2>
+        <p>Kanallar arası ilişkiyi modeller («hangi kanallar önemli?»).</p>
+        <ul>
+          <li>Varsayılan <strong>ratio=8</strong></li>
+          <li>Akış: Global Average Pooling → Dense (relu, channel/ratio) → Dense (channel) → Sigmoid</li>
+          <li>Çıktı: <code>inputs * scale</code> (girdi ile aynı şekil)</li>
+          <li><code>build()</code>: alt Dense katmanları açıkça build edilir (ağırlık yükleme uyumu)</li>
+          <li><code>get_config()</code>: <code>ratio</code> serileştirmeye dahil</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h2>SpatialAttention</h2>
+        <p>Uzamsal odak («önemli bilgi nerede?»).</p>
+        <ul>
+          <li>Varsayılan <strong>kernel_size=7</strong></li>
+          <li>Kanal ekseninde ortalama + maksimum havuzlama, birleştirme (2 kanal)</li>
+          <li>Conv2D (1 filtre, same padding, sigmoid) → <code>inputs * scale</code></li>
+          <li><code>get_config()</code>: <code>kernel_size</code> kaydedilir</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h2>Ortak özellikler</h2>
+        <ul>
+          <li><code>tensorflow.keras.layers.Layer</code> alt sınıfları</li>
+          <li>He normal başlatma; scale, giriş <code>dtype</code> ile uyumlu (<code>tf.cast</code>)</li>
+          <li><code>compute_output_shape</code>: tensör boyutu değişmez</li>
+          <li>Tipik kullanım: <code>src/model.py</code> içinde dikkat blokları</li>
+        </ul>
+      </section>
+    </main>
+    <footer>Kaynak: src/layers.py · ChannelAttention + SpatialAttention</footer>
+  </div>
+</body>
+</html>
