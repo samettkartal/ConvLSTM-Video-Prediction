@@ -99,3 +99,4 @@ Eğitim boyunca toplam kaybın (Total Loss) değişimi aşağıdadır. Eğrinin 
 ## İletişim
 Samet Kartal
 E-posta: 220212006@ostimteknik.edu.tr
+<-- colleague-ops-smoke -->
