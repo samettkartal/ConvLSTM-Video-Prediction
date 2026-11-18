@@ -99,3 +99,4 @@ Eğitim boyunca toplam kaybın (Total Loss) değişimi aşağıdadır. Eğrinin 
 ## İletişim
 Samet Kartal
 E-posta: 220212006@ostimteknik.edu.tr
+<!-- Hasarlı paket bildirimi ve gönderi iade sınırı teslimattan itibaren 14 gündür. -->
